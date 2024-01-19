@@ -2,8 +2,13 @@
   "devDependencies": {
     "turbo": "^1.11.3"
   },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "node wc2024/api/dist/main"
+
+  },
   "workspaces": [
     "wc2024/*"
   ]
-  
 }
