@@ -115,7 +115,7 @@ let WorldcupService = class WorldcupService {
     ;
     resetAllScore(cup) {
         const cupTeams = this.worldcup.find(c => c.uid === cup);
-        cupTeams.teams = cupTeams.teams.map(team => ({ ...team, score: 0 }));
+        cupTeams.teams = cupTeams.teams.map(team => ({ ...team, score: 0, archiveMatches: [] }));
         return this.findAllTeams(cup);
     }
     ;
