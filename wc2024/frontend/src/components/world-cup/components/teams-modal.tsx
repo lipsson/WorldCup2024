@@ -18,7 +18,7 @@ type TeamsModalType = {
     onClose: () => void
 }
 export const TeamsModal = (props: TeamsModalType) => {
-    const { cup, cupName, onClose } = props;
+    const { cup = 1, cupName, onClose } = props;
 
     const client = useQueryClient();
     const { data: teams, isLoading } = useAllTeamsListQuery(cup);
@@ -86,6 +86,21 @@ export const TeamsModal = (props: TeamsModalType) => {
         })
     };
 
+    useEffect(() => {
+        if (teams?.length) {
+            if (isStart && !pause && time > 0) setTimeout(() => {
+                setTime(prevTime => prevTime - 1);
+                if (time !== 90 && time % 10 === 0) {
+                    const score = Math.floor((Math.random() * teams?.length) + 1)
+                    handlScore(score)
+                }
+            }, 1000);
+            setMatches(_.chunk(teams || [], 2));
+        }
+    }, [time, isStart, pause, teams])
+
+
+
     if (!teams || isLoading) {
         return (
             <Box>
@@ -93,23 +108,6 @@ export const TeamsModal = (props: TeamsModalType) => {
             </Box>
         );
     }
-
-    useEffect(() => {
-        if (isStart && !pause && time > 0) setTimeout(() => {
-            setTime(prevTime => prevTime - 1);
-            if (time !== 90 && time % 10 === 0) {
-                const score = Math.floor((Math.random() * teams.length) + 1)
-                handlScore(score)
-            }
-        }, 1000);
-
-
-    }, [time, isStart, pause])
-
-    useEffect(() => {
-        setMatches(_.chunk(teams, 2))
-    }, [teams])
-
 
     return (
         <Dialog maxWidth={'lg'} fullWidth onClose={handleClose} open>
